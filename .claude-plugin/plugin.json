@@ -1,0 +1,13 @@
+{
+  "name": "auttickn",
+  "displayName": "auttickn",
+  "version": "0.1.0",
+  "description": "Turn a feature of a web app into a narrated tutorial video, from the app's own code, through the auttickn MCP.",
+  "author": {
+    "name": "Diego Alexsander",
+    "url": "https://github.com/diego-alexsander"
+  },
+  "repository": "https://github.com/diego-alexsander/auttickn-skill",
+  "license": "Apache-2.0",
+  "keywords": ["tutorial", "video", "documentation", "mcp"]
+}

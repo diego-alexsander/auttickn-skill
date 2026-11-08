@@ -1,0 +1,15 @@
+{
+  "name": "auttickn",
+  "description": "auttickn plugins: narrated tutorial videos from your app's code.",
+  "owner": {
+    "name": "Diego Alexsander",
+    "url": "https://github.com/diego-alexsander"
+  },
+  "plugins": [
+    {
+      "name": "auttickn",
+      "source": "./",
+      "description": "Turn a feature of a web app into a narrated tutorial video, from the app's own code, through the auttickn MCP."
+    }
+  ]
+}
