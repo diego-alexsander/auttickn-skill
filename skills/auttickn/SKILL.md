@@ -105,5 +105,7 @@ otherwise it adds `stub` and the server answers `invalid_scope`).
    language. Review it with the user, `edit_script` (one line per Passo),
    `approve_script`. Approved means frozen.
 2. `record_tutorial` with the same `commit` as the last passing Validação. The
-   commits run now, once. Follow `get_job` until `completed`; give the user the
-   video and article URLs.
+   commits run now, once. Follow `get_job` until `completed`; give the user
+   `outputs.video`, `outputs.article` and `outputs.screenshots` (one per Passo,
+   in order). Video and article links expire in 7 days; `get_job` again mints
+   new ones. If `failed`, follow its `error`.
