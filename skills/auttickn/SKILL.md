@@ -19,7 +19,8 @@ otherwise it adds `stub` and the server answers `invalid_scope`).
 ## Rules
 
 - Never ask for, read, print or send app credentials. The login is stored in the
-  Ambiente by a person in the auttickn web app; you only describe the login form.
+  Ambiente by a person in the auttickn web app (Settings → Environments); you
+  only describe the login form.
 - Declare from the code. Do not guess from screenshots of other apps.
 - Mark `commits: true` on the click that saves, sends, pays, publishes or
   deletes. It is not executed in a Validação, only once in the Gravação.
@@ -31,7 +32,11 @@ otherwise it adds `stub` and the server answers `invalid_scope`).
 1. `list_environments`. Pick the Ambiente for the app (production, staging or a
    preview, published and public; no localhost, no VPN). It needs a `projectId`
    to keep Convenções. If none fits or `hasCredentials` is false for an app with
-   login, ask the user to create it / store the login in the auttickn web app.
+   login, ask the user to create it / store the login in the auttickn web app,
+   under Settings → Environments, and to give you the environment id it shows.
+   If `credentialsRefused` is true, the site refused the stored login at the
+   last attempt: Validações and the Gravação are blocked (409) until the user
+   updates it there (the list shows "Login refused, update it").
 2. `get_conventions` for that project. If they exist, read them and skip to 2.
 3. Otherwise discover them in the repository, and confirm with the user (the PM
    or the dev) what you could not see in the code:
