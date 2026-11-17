@@ -11,8 +11,9 @@ on the published app (the **Ambiente**), tells you the **first** target that
 failed, and, once it passes, records the video and narrates it.
 
 You need the auttickn MCP connected (`/mcp`, with OAuth or an organization API
-key). If its tools (`list_environments`, `validate_caminho`, …) are not
-available, stop and ask the user to connect it. With OAuth, request the scopes
+key). OAuth works on every plan, the free Evaluation included; an organization
+API key needs Pro. If its tools (`list_environments`, `validate_caminho`, …)
+are not available, stop and ask the user to connect it. With OAuth, request the scopes
 `auttickn:mcp offline_access` (in Kiro CLI, set `"oauthScopes"` to those two;
 otherwise it adds `stub` and the server answers `invalid_scope`).
 
@@ -26,6 +27,14 @@ otherwise it adds `stub` and the server answers `invalid_scope`).
   deletes. It is not executed in a Validação, only once in the Gravação.
 - Validações cost: 3 free per Tutorial, the 4th reserves the Tutorial's credit,
   10 is the hard limit. Fix the Caminho from the report before sending again.
+  The credit comes from the account: the Evaluation (2 Tutoriais, once), a
+  Pack or Pro. The 3rd `propose_script` and `record_tutorial` use the same one.
+- When a tool answers `reason: purchase_required`, the account has no credits
+  left: give the user the `purchaseUrl` and stop. Do not retry until they say
+  they bought a Pack or Pro.
+- When a tool answers `reason: email_unverified`, the user must verify their
+  email (the link is in their inbox) before a 2nd Tutorial or before getting
+  the files: tell them, wait for them to confirm, then call the tool again.
 
 ## 1. Onboarding the app (once per app)
 
@@ -111,6 +120,10 @@ otherwise it adds `stub` and the server answers `invalid_scope`).
    `approve_script`. Approved means frozen.
 2. `record_tutorial` with the same `commit` as the last passing Validação. The
    commits run now, once. Follow `get_job` until `completed`; give the user
+   `pageUrl` (the Tutorial page in the auttickn app) together with
    `outputs.video`, `outputs.article` and `outputs.screenshots` (one per Passo,
    in order). Video and article links expire in 7 days; `get_job` again mints
-   new ones. If `failed`, follow its `error`.
+   new ones. If `completed` comes with `reason: email_unverified` and no
+   `outputs`, give the user `pageUrl` to watch it, ask them to verify their
+   email, and call `get_job` again once they confirm. If `failed`, follow its
+   `error` (the credit was returned).

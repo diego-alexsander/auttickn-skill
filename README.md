@@ -9,7 +9,8 @@ follows the open SKILL.md format, so any agent that reads skills can use it.
 
 ## Requirements
 
-The auttickn MCP must be connected, with OAuth or an organization API key.
+The auttickn MCP must be connected, with OAuth (any plan, the free Evaluation
+included) or an organization API key (Pro).
 With OAuth, request the scopes `auttickn:mcp` and `offline_access`. In Kiro
 CLI, set them in `mcp.json`:
 
