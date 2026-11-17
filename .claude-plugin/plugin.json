@@ -1,7 +1,7 @@
 {
   "name": "auttickn",
   "displayName": "auttickn",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Turn a feature of a web app into a narrated tutorial video, from the app's own code, through the auttickn MCP.",
   "author": {
     "name": "Diego Alexsander",
