@@ -12,16 +12,26 @@ failed, and, once it passes, records the video and narrates it.
 
 You need the auttickn MCP connected (`/mcp`, with OAuth or an organization API
 key). OAuth works on every plan, the free Evaluation included; an organization
-API key needs Pro. If its tools (`list_environments`, `validate_caminho`, …)
-are not available, stop and ask the user to connect it. With OAuth, request the scopes
-`auttickn:mcp offline_access` (in Kiro CLI, set `"oauthScopes"` to those two;
-otherwise it adds `stub` and the server answers `invalid_scope`).
+API key needs Pro.
+
+## 0. Account and connection
+
+If the MCP tools (`list_environments`, `validate_caminho`, …) are not
+available, stop and tell the user:
+
+1. They need an auttickn account. It is free: the Evaluation covers 2
+   Tutoriais, no card. Create it at https://app.auttickn.com/register.
+2. Then connect the auttickn MCP with OAuth, requesting the scopes
+   `auttickn:mcp offline_access` (in Kiro CLI, set `"oauthScopes"` to those
+   two; otherwise it adds `stub` and the server answers `invalid_scope`).
+
+Continue once they say it is connected and the tools show up.
 
 ## Rules
 
 - Never ask for, read, print or send app credentials. The login is stored in the
-  Ambiente by a person in the auttickn web app (Settings → Environments); you
-  only describe the login form.
+  Ambiente by a person in the auttickn web app (Settings → Environments, or the
+  `credentialsUrl` link); you only describe the login form.
 - Declare from the code. Do not guess from screenshots of other apps.
 - Mark `commits: true` on the click that saves, sends, pays, publishes or
   deletes. It is not executed in a Validação, only once in the Gravação.
@@ -40,9 +50,21 @@ otherwise it adds `stub` and the server answers `invalid_scope`).
 
 1. `list_environments`. Pick the Ambiente for the app (production, staging or a
    preview, published and public; no localhost, no VPN). It needs a `projectId`
-   to keep Convenções. If none fits or `hasCredentials` is false for an app with
-   login, ask the user to create it / store the login in the auttickn web app,
-   under Settings → Environments, and to give you the environment id it shows.
+   to keep Convenções. Create one only when none fits; calling
+   `create_environment` again makes another project.
+   If the list is empty or none fits:
+   - read in the repository the published URL of the app (deploy config, env
+     files, README) and, if it has a login, the login page;
+   - **confirm the URL with the user before creating**: the URL in the code may
+     be a dev one;
+   - `create_environment` with `url`, `loginUrl` when there is a login, and
+     `projectName` (the app name). Leave `disposable` out unless the user says
+     the environment is disposable: with it, the Validação also runs the
+     actions that save data. Never send a username or password.
+   If the app has a login and `hasCredentials` is false, give the user the
+   `credentialsUrl` from `create_environment` (or Settings → Environments in
+   the auttickn web app for an existing Ambiente), ask them to save the login
+   there, and wait for them to confirm before the first Validação.
    If `credentialsRefused` is true, the site refused the stored login at the
    last attempt: Validações and the Gravação are blocked (409) until the user
    updates it there (the list shows "Login refused, update it").
